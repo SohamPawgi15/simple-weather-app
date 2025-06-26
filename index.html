@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple Weather App</title>
+    <!-- Main stylesheet for the app -->
+    <link rel="stylesheet" href="styles.css">
+    <!-- Google Fonts for a clean, modern look -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <!-- App header with title and controls -->
+        <header class="header">
+            <h1><i class="fas fa-cloud-sun"></i> Weather App</h1>
+            <div class="controls">
+                <!-- Use my location button -->
+                <button id="locationBtn" class="btn btn-secondary" title="Use my location">
+                    <i class="fas fa-location-arrow"></i>
+                </button>
+                <!-- Toggle Celsius/Fahrenheit -->
+                <button id="unitToggle" class="btn btn-secondary" title="Toggle temperature unit">
+                    <span id="unitText">°C</span>
+                </button>
+                <!-- Toggle dark/light theme -->
+                <button id="themeToggle" class="btn btn-secondary" title="Toggle dark/light theme">
+                    <i class="fas fa-moon" id="themeIcon"></i>
+                </button>
+            </div>
+        </header>
+
+        <main class="main">
+            <!-- City search input -->
+            <div class="search-section">
+                <div class="search-container">
+                    <input 
+                        type="text" 
+                        id="cityInput" 
+                        placeholder="Enter city name..."
+                        class="search-input"
+                    >
+                    <button id="searchBtn" class="btn btn-primary" title="Search for weather">
+                        <i class="fas fa-search"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Main weather display (hidden by default) -->
+            <div id="weatherContainer" class="weather-container hidden">
+                <div class="current-weather">
+                    <div class="weather-header">
+                        <h2 id="cityName">City Name</h2>
+                        <p id="currentDate">Date</p>
+                    </div>
+                    
+                    <div class="weather-main">
+                        <div class="temperature-section">
+                            <div class="temperature">
+                                <span id="temperature">--</span>
+                                <span id="temperatureUnit">°C</span>
+                            </div>
+                            <div class="weather-description">
+                                <img id="weatherIcon" src="" alt="Weather icon" class="weather-icon">
+                                <span id="weatherDescription">Weather description</span>
+                            </div>
+                        </div>
+                        
+                        <div class="weather-details">
+                            <div class="detail-item">
+                                <i class="fas fa-thermometer-half"></i>
+                                <span>Feels like: <span id="feelsLike">--</span><span id="feelsLikeUnit">°C</span></span>
+                            </div>
+                            <div class="detail-item">
+                                <i class="fas fa-tint"></i>
+                                <span>Humidity: <span id="humidity">--</span>%</span>
+                            </div>
+                            <div class="detail-item">
+                                <i class="fas fa-wind"></i>
+                                <span>Wind: <span id="windSpeed">--</span> <span id="windUnit">m/s</span></span>
+                            </div>
+                            <div class="detail-item">
+                                <i class="fas fa-eye"></i>
+                                <span>Visibility: <span id="visibility">--</span> km</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- AQI section -->
+                <div id="aqiContainer" class="aqi-container">
+                    <h3>Air Quality Index (AQI)</h3>
+                    <div id="aqiValue">--</div>
+                    <div id="aqiDescription">--</div>
+                </div>
+
+                <!-- Weather alerts section (hidden if no alerts) -->
+                <div id="alertsContainer" class="alerts-container hidden">
+                    <h3>Weather Alerts</h3>
+                    <div id="alertsList"></div>
+                </div>
+
+                <!-- 5-day forecast -->
+                <div id="forecastContainer" class="forecast-container">
+                    <h3>5-Day Forecast</h3>
+                    <div id="forecastList" class="forecast-list">
+                        <!-- Forecast items will be added here -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Error message display -->
+            <div id="errorContainer" class="error-container hidden">
+                <div class="error-content">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    <h3 id="errorTitle">Error</h3>
+                    <p id="errorMessage">Something went wrong</p>
+                </div>
+            </div>
+
+            <!-- Loading spinner -->
+            <div id="loadingContainer" class="loading-container hidden">
+                <div class="loading-spinner"></div>
+                <p>Loading weather data...</p>
+            </div>
+
+            <!-- Recent search history -->
+            <div id="historyContainer" class="history-container">
+                <h3>Recent Searches</h3>
+                <div id="searchHistory" class="search-history">
+                    <!-- Search history items will be added here -->
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Main JavaScript for app logic -->
+    <script src="script.js"></script>
+</body>
+</html> 
