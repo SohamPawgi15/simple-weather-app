@@ -4,7 +4,7 @@ Hey there! This is a weather dashboard I built for fun and to learn more about w
 
 ## 🔒 Security Notice
 
-**Important**: This app now includes secure API key management. The API key is no longer exposed in the frontend code. See [DEPLOYMENT.md](DEPLOYMENT.md) for detailed deployment instructions.
+**Important**: This app now includes secure API key management. The API key is no longer exposed in the frontend code. All API calls are proxied through a secure backend to protect your API key.
 
 ## Features
 
@@ -20,7 +20,13 @@ Hey there! This is a weather dashboard I built for fun and to learn more about w
 
 ## Getting Started
 
-### Option 1: Quick Start (Backend Proxy)
+### Option 1: GitHub Pages + Backend Proxy (Recommended)
+1. **Deploy backend to Railway/Render** (see [GITHUB_PAGES_SETUP.md](GITHUB_PAGES_SETUP.md))
+2. **Update `config.js`** with your backend URL
+3. **Push to GitHub** and enable GitHub Pages
+4. **Your app will be live** at `https://yourusername.github.io/your-repo-name`
+
+### Option 2: Local Development
 1. **Clone the repo** and navigate to the project folder
 2. **Install dependencies:** `npm install`
 3. **Set your API key** as an environment variable:
@@ -30,13 +36,9 @@ Hey there! This is a weather dashboard I built for fun and to learn more about w
 4. **Start the server:** `npm start`
 5. **Open** `http://localhost:3000` in your browser
 
-### Option 2: Frontend Only (with secure hosting)
-1. **Get your API key** from [OpenWeatherMap](https://openweathermap.org/)
-2. **Choose a hosting platform** (Netlify/Vercel recommended)
-3. **Set environment variables** with your API key
-4. **Deploy** your app
-
-See [DEPLOYMENT.md](DEPLOYMENT.md) for detailed instructions.
+### Option 3: Other Hosting Platforms
+- **Netlify/Vercel** with environment variables (see [DEPLOYMENT.md](DEPLOYMENT.md))
+- **Railway/Render** for full-stack deployment
 
 ## Usage Tips
 
@@ -57,34 +59,45 @@ See [DEPLOYMENT.md](DEPLOYMENT.md) for detailed instructions.
 
 ```
 Simple Weather App/
-├── index.html          # Main HTML file
-├── demo.html           # Demo version with mock data
-├── styles.css          # All the CSS for layout, theming, and responsive design
-├── script.js           # JavaScript for fetching data and updating the UI
-├── config.js           # Configuration file (API keys, settings)
-├── server.js           # Backend proxy server (secures API key)
-├── package.json        # Node.js dependencies
-├── DEPLOYMENT.md       # Secure deployment guide
-├── .gitignore          # Excludes sensitive files
-└── README.md           # This file
+├── index.html              # Main HTML file
+├── demo.html               # Demo version with mock data
+├── styles.css              # All the CSS for layout, theming, and responsive design
+├── script.js               # JavaScript for fetching data and updating the UI
+├── config.js               # Configuration file (API keys, settings)
+├── config.production.js    # Production configuration template
+├── server.js               # Backend proxy server (secures API key)
+├── package.json            # Node.js dependencies
+├── .gitignore              # Excludes sensitive files
+├── DEPLOYMENT.md           # Secure deployment guide
+├── GITHUB_PAGES_SETUP.md   # GitHub Pages specific setup
+└── README.md               # This file
 ```
+
+## Security Features
+
+✅ **API Key Protection**: Backend proxy keeps your API key secure  
+✅ **Environment Variables**: No hardcoded secrets in production  
+✅ **HTTPS Only**: All deployments use secure connections  
+✅ **CORS Configured**: Backend allows frontend requests safely  
 
 ## Troubleshooting
 
 - **City not found?** Double-check the spelling or try a bigger city nearby.
 - **Location not working?** Make sure your browser has location permission.
-- **API errors?** Check your API key, and make sure you haven't hit the free usage limit (1,000 calls/day).
+- **API errors?** Check your backend deployment and API key configuration.
 - **Icons not loading?** Make sure you're online; icons are loaded from OpenWeatherMap's CDN.
+- **Backend issues?** Check the health endpoint: `https://your-backend-url/api/health`
 
 ## Hosting Your App
 
 Want to share your app with friends? You can host it for free on:
-- **[Netlify](https://www.netlify.com/)** (recommended - supports environment variables)
+- **[GitHub Pages](https://pages.github.com/)** + Railway/Render backend (current setup)
+- **[Netlify](https://www.netlify.com/)** (supports environment variables)
 - **[Vercel](https://vercel.com/)** (supports environment variables)
-- **[Railway](https://railway.app/)** (for backend proxy)
-- **[Render](https://render.com/)** (for backend proxy)
+- **[Railway](https://railway.app/)** (full-stack deployment)
+- **[Render](https://render.com/)** (full-stack deployment)
 
-See [DEPLOYMENT.md](DEPLOYMENT.md) for step-by-step instructions.
+See [DEPLOYMENT.md](DEPLOYMENT.md) and [GITHUB_PAGES_SETUP.md](GITHUB_PAGES_SETUP.md) for step-by-step instructions.
 
 ## Contributing
 
