@@ -2,6 +2,10 @@
 
 Hey there! This is a weather dashboard I built for fun and to learn more about web APIs, JavaScript, and responsive design. It fetches real-time weather, AQI, and alerts for any city using OpenWeatherMap. I hope you find it useful or inspiring!
 
+## 🔒 Security Notice
+
+**Important**: This app now includes secure API key management. The API key is no longer exposed in the frontend code. See [DEPLOYMENT.md](DEPLOYMENT.md) for detailed deployment instructions.
+
 ## Features
 
 - **City Search:** Type any city and get the current weather, AQI, and a 5-day forecast.
@@ -16,17 +20,23 @@ Hey there! This is a weather dashboard I built for fun and to learn more about w
 
 ## Getting Started
 
-### 1. Get Your Free API Key
-- Go to [OpenWeatherMap](https://openweathermap.org/)
-- Sign up and grab your API key from your dashboard.
+### Option 1: Quick Start (Backend Proxy)
+1. **Clone the repo** and navigate to the project folder
+2. **Install dependencies:** `npm install`
+3. **Set your API key** as an environment variable:
+   ```bash
+   export OPENWEATHER_API_KEY="your_api_key_here"
+   ```
+4. **Start the server:** `npm start`
+5. **Open** `http://localhost:3000` in your browser
 
-### 2. Add Your API Key
-- Open `script.js` in your code editor.
-- Find the line with `this.apiKey = 'YOUR_API_KEY';` and paste your key in.
+### Option 2: Frontend Only (with secure hosting)
+1. **Get your API key** from [OpenWeatherMap](https://openweathermap.org/)
+2. **Choose a hosting platform** (Netlify/Vercel recommended)
+3. **Set environment variables** with your API key
+4. **Deploy** your app
 
-### 3. Run the App
-- Just open `index.html` in your browser. That's it!
-- (For public hosting, see the tips at the end.)
+See [DEPLOYMENT.md](DEPLOYMENT.md) for detailed instructions.
 
 ## Usage Tips
 
@@ -40,18 +50,23 @@ Hey there! This is a weather dashboard I built for fun and to learn more about w
 
 - Uses OpenWeatherMap's One Call 3.0 API for weather and alerts, and the Air Pollution API for AQI.
 - Uses the Geocoding API to convert city names to coordinates.
-- All data is fetched with JavaScript (no backend needed).
+- **Secure:** API calls are proxied through a backend to protect your API key.
 - Search history is saved in your browser (localStorage).
 
 ## File Structure
 
 ```
 Simple Weather App/
-├── index.html      # Main HTML file
-├── styles.css      # All the CSS for layout, theming, and responsive design
-├── script.js       # JavaScript for fetching data and updating the UI
-├── demo.html       # Demo version with mock data (no API key needed)
-└── README.md       # This file
+├── index.html          # Main HTML file
+├── demo.html           # Demo version with mock data
+├── styles.css          # All the CSS for layout, theming, and responsive design
+├── script.js           # JavaScript for fetching data and updating the UI
+├── config.js           # Configuration file (API keys, settings)
+├── server.js           # Backend proxy server (secures API key)
+├── package.json        # Node.js dependencies
+├── DEPLOYMENT.md       # Secure deployment guide
+├── .gitignore          # Excludes sensitive files
+└── README.md           # This file
 ```
 
 ## Troubleshooting
@@ -63,7 +78,13 @@ Simple Weather App/
 
 ## Hosting Your App
 
-Want to share your app with friends? You can host it for free on [GitHub Pages](https://pages.github.com/), [Netlify](https://www.netlify.com/), or [Vercel](https://vercel.com/). Just upload your files and follow their instructions.
+Want to share your app with friends? You can host it for free on:
+- **[Netlify](https://www.netlify.com/)** (recommended - supports environment variables)
+- **[Vercel](https://vercel.com/)** (supports environment variables)
+- **[Railway](https://railway.app/)** (for backend proxy)
+- **[Render](https://render.com/)** (for backend proxy)
+
+See [DEPLOYMENT.md](DEPLOYMENT.md) for step-by-step instructions.
 
 ## Contributing
 

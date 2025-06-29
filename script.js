@@ -4,11 +4,13 @@
 
 class WeatherApp {
     constructor() {
-        // Set your OpenWeather API key here
-        this.apiKey = '4786b8be693d65190e214815619d6ba0';
-        this.baseUrl = 'https://api.openweathermap.org';
+        // Get API key from config (will be set by hosting platform)
+        this.apiKey = window.config?.OPENWEATHER_API_KEY || 'YOUR_API_KEY_HERE';
+        this.baseUrl = window.config?.OPENWEATHER_BASE_URL || 'https://api.openweathermap.org';
+        // Backend proxy URL - update this with your deployed backend URL
+        this.backendUrl = window.config?.BACKEND_URL || 'http://localhost:3000';
         // Default to Celsius; can be toggled
-        this.unit = 'metric'; // 'metric' for Celsius, 'imperial' for Fahrenheit
+        this.unit = window.config?.DEFAULT_UNIT || 'metric'; // 'metric' for Celsius, 'imperial' for Fahrenheit
         // Load search history from localStorage
         this.searchHistoryArr = JSON.parse(localStorage.getItem('weatherSearchHistory')) || [];
         
@@ -113,9 +115,9 @@ class WeatherApp {
         }
     }
 
-    // Use OpenWeather's geocoding API to get lat/lon for a city
+    // Use backend proxy for geocoding instead of calling OpenWeather directly
     async fetchCoordinates(city) {
-        const url = `${this.baseUrl}/geo/1.0/direct?q=${encodeURIComponent(city)}&limit=1&appid=${this.apiKey}`;
+        const url = `${this.backendUrl}/api/geocode/${encodeURIComponent(city)}`;
         const response = await fetch(url);
         if (!response.ok) throw new Error('Failed to fetch coordinates.');
         const data = await response.json();
@@ -128,9 +130,9 @@ class WeatherApp {
         };
     }
 
-    // Fetch weather and forecast from One Call 3.0 API
+    // Fetch weather and forecast from backend proxy
     async fetchOneCallData(lat, lon) {
-        const url = `${this.baseUrl}/data/3.0/onecall?lat=${lat}&lon=${lon}&appid=${this.apiKey}&units=${this.unit}`;
+        const url = `${this.backendUrl}/api/weather?lat=${lat}&lon=${lon}&units=${this.unit}`;
         const response = await fetch(url);
         if (!response.ok) throw new Error('Failed to fetch weather data. Please try again later.');
         return await response.json();
@@ -238,9 +240,9 @@ class WeatherApp {
         });
     }
 
-    // Reverse geocode lat/lon to city name/country
+    // Reverse geocode lat/lon to city name/country using backend proxy
     async reverseGeocode(lat, lon) {
-        const url = `${this.baseUrl}/geo/1.0/reverse?lat=${lat}&lon=${lon}&limit=1&appid=${this.apiKey}`;
+        const url = `${this.backendUrl}/api/reverse-geocode?lat=${lat}&lon=${lon}`;
         const response = await fetch(url);
         if (!response.ok) throw new Error('Failed to reverse geocode location.');
         const data = await response.json();
@@ -307,10 +309,10 @@ class WeatherApp {
         this.errorContainer.classList.add('hidden');
     }
 
-    // Fetch AQI from Air Pollution API and update UI
+    // Fetch AQI from backend proxy
     async fetchAndDisplayAQI(lat, lon) {
         try {
-            const url = `${this.baseUrl}/data/2.5/air_pollution?lat=${lat}&lon=${lon}&appid=${this.apiKey}`;
+            const url = `${this.backendUrl}/api/air-quality?lat=${lat}&lon=${lon}`;
             const response = await fetch(url);
             if (!response.ok) throw new Error('Failed to fetch AQI.');
             const data = await response.json();
