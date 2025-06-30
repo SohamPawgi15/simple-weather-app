@@ -30,6 +30,7 @@ class WeatherApp {
         this.unitText = document.getElementById('unitText');
         this.themeToggle = document.getElementById('themeToggle');
         this.themeIcon = document.getElementById('themeIcon');
+        this.citySuggestions = document.getElementById('citySuggestions');
 
         // Weather display elements
         this.weatherContainer = document.getElementById('weatherContainer');
@@ -76,6 +77,14 @@ class WeatherApp {
     // Set up all event listeners
     bindEvents() {
         this.searchBtn.addEventListener('click', () => this.searchWeather());
+        this.cityInput.addEventListener('input', (e) => this.handleCityInput(e));
+        this.cityInput.addEventListener('keydown', (e) => this.handleSuggestionKeydown(e));
+        this.cityInput.addEventListener('focus', () => this.showSuggestions());
+        document.addEventListener('click', (e) => {
+            if (!this.cityInput.contains(e.target) && !this.citySuggestions.contains(e.target)) {
+                this.hideSuggestions();
+            }
+        });
         this.cityInput.addEventListener('keypress', (e) => {
             if (e.key === 'Enter') this.searchWeather();
         });
@@ -516,6 +525,95 @@ class WeatherApp {
 
         // Show the stats section
         this.weatherStats.classList.remove('hidden');
+    }
+
+    // Autocomplete logic
+    handleCityInput(e) {
+        const value = e.target.value.trim();
+        if (!value) {
+            this.hideSuggestions();
+            return;
+        }
+        clearTimeout(this.suggestionTimeout);
+        this.suggestionTimeout = setTimeout(() => {
+            this.fetchCitySuggestions(value);
+        }, 250);
+    }
+
+    async fetchCitySuggestions(query) {
+        try {
+            const url = `${this.backendUrl}/api/geocode/${encodeURIComponent(query)}`;
+            const response = await fetch(url);
+            if (!response.ok) throw new Error('Failed to fetch suggestions');
+            const data = await response.json();
+            if (!data.length) {
+                this.hideSuggestions();
+                return;
+            }
+            this.showSuggestions(data);
+        } catch (e) {
+            this.hideSuggestions();
+        }
+    }
+
+    showSuggestions(suggestions = []) {
+        if (!suggestions.length) {
+            this.citySuggestions.classList.add('hidden');
+            this.citySuggestions.innerHTML = '';
+            return;
+        }
+        this.citySuggestions.innerHTML = '';
+        suggestions.slice(0, 7).forEach((item, idx) => {
+            const div = document.createElement('div');
+            div.className = 'city-suggestion';
+            div.textContent = `${item.name}${item.state ? ', ' + item.state : ''}, ${item.country}`;
+            div.tabIndex = 0;
+            div.addEventListener('mousedown', (e) => {
+                e.preventDefault();
+                this.selectSuggestion(item);
+            });
+            this.citySuggestions.appendChild(div);
+        });
+        this.citySuggestions.classList.remove('hidden');
+        this.suggestionIndex = -1;
+    }
+
+    hideSuggestions() {
+        this.citySuggestions.classList.add('hidden');
+        this.citySuggestions.innerHTML = '';
+        this.suggestionIndex = -1;
+    }
+
+    handleSuggestionKeydown(e) {
+        const items = Array.from(this.citySuggestions.querySelectorAll('.city-suggestion'));
+        if (!items.length || this.citySuggestions.classList.contains('hidden')) return;
+        if (e.key === 'ArrowDown') {
+            e.preventDefault();
+            this.suggestionIndex = (this.suggestionIndex + 1) % items.length;
+            this.updateSuggestionHighlight(items);
+        } else if (e.key === 'ArrowUp') {
+            e.preventDefault();
+            this.suggestionIndex = (this.suggestionIndex - 1 + items.length) % items.length;
+            this.updateSuggestionHighlight(items);
+        } else if (e.key === 'Enter' && this.suggestionIndex >= 0) {
+            e.preventDefault();
+            items[this.suggestionIndex].dispatchEvent(new Event('mousedown'));
+        }
+    }
+
+    updateSuggestionHighlight(items) {
+        items.forEach((el, idx) => {
+            el.classList.toggle('active', idx === this.suggestionIndex);
+        });
+        if (this.suggestionIndex >= 0) {
+            items[this.suggestionIndex].scrollIntoView({ block: 'nearest' });
+        }
+    }
+
+    selectSuggestion(item) {
+        this.cityInput.value = `${item.name}${item.state ? ', ' + item.state : ''}, ${item.country}`;
+        this.hideSuggestions();
+        this.searchWeather();
     }
 }
 

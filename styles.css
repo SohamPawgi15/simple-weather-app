@@ -744,4 +744,64 @@ body.dark-theme .stat-value {
 .header a:hover, .header a:active, .header a:focus {
     text-decoration: none;
     color: inherit;
+}
+
+/* City Autocomplete Suggestions */
+.city-suggestions {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 100%;
+    background: #fff;
+    border: 1px solid #eee;
+    border-top: none;
+    z-index: 100;
+    max-height: 220px;
+    overflow-y: auto;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.08);
+    border-radius: 0 0 12px 12px;
+    font-size: 1rem;
+}
+.city-suggestions:not(.hidden) {
+    display: block;
+}
+.city-suggestion {
+    padding: 12px 20px;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+.city-suggestion:hover, .city-suggestion.active {
+    background: #f3f4f6;
+}
+
+/* Mobile UI improvements */
+@media (max-width: 768px) {
+    .search-container {
+        flex-direction: column;
+        position: relative;
+    }
+    .search-input {
+        font-size: 1.1rem;
+        padding: 14px 16px;
+    }
+    .btn {
+        font-size: 1rem;
+        padding: 12px 18px;
+    }
+    .city-suggestions {
+        font-size: 1rem;
+    }
+}
+@media (max-width: 480px) {
+    .search-input {
+        font-size: 1rem;
+        padding: 12px 12px;
+    }
+    .btn {
+        font-size: 0.95rem;
+        padding: 10px 12px;
+    }
+    .city-suggestions {
+        font-size: 0.95rem;
+    }
 } 
