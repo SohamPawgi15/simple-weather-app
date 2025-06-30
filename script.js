@@ -502,18 +502,20 @@ class WeatherApp {
     // Display weather statistics
     displayWeatherStats(data) {
         // Sunrise and sunset
-        const timezoneOffset = data.timezone_offset || 0; // in seconds
-        const sunriseTime = new Date((data.current.sunrise + timezoneOffset) * 1000);
-        const sunsetTime = new Date((data.current.sunset + timezoneOffset) * 1000);
-        this.sunrise.textContent = sunriseTime.toLocaleTimeString('en-US', { 
-            hour: '2-digit', 
+        const timezone = data.timezone || 'UTC';
+        const sunriseTime = new Date(data.current.sunrise * 1000);
+        const sunsetTime = new Date(data.current.sunset * 1000);
+        this.sunrise.textContent = sunriseTime.toLocaleTimeString('en-US', {
+            hour: '2-digit',
             minute: '2-digit',
-            hour12: true 
+            hour12: true,
+            timeZone: timezone
         });
-        this.sunset.textContent = sunsetTime.toLocaleTimeString('en-US', { 
-            hour: '2-digit', 
+        this.sunset.textContent = sunsetTime.toLocaleTimeString('en-US', {
+            hour: '2-digit',
             minute: '2-digit',
-            hour12: true 
+            hour12: true,
+            timeZone: timezone
         });
 
         // High and low temperatures (from today's forecast)
