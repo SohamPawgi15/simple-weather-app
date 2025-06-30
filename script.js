@@ -502,8 +502,9 @@ class WeatherApp {
     // Display weather statistics
     displayWeatherStats(data) {
         // Sunrise and sunset
-        const sunriseTime = new Date(data.current.sunrise * 1000);
-        const sunsetTime = new Date(data.current.sunset * 1000);
+        const timezoneOffset = data.timezone_offset || 0; // in seconds
+        const sunriseTime = new Date((data.current.sunrise + timezoneOffset) * 1000);
+        const sunsetTime = new Date((data.current.sunset + timezoneOffset) * 1000);
         this.sunrise.textContent = sunriseTime.toLocaleTimeString('en-US', { 
             hour: '2-digit', 
             minute: '2-digit',
