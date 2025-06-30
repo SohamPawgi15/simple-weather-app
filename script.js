@@ -220,7 +220,11 @@ class WeatherApp {
                 <div class="forecast-date">${dayName}</div>
                 <img src="https://openweathermap.org/img/wn/${weather.icon}.png" 
                      alt="${weather.description}" class="forecast-icon">
-                <div class="forecast-temp">${Math.round(forecast.temp.day)}${this.unit === 'metric' ? '°C' : '°F'}</div>
+                <div class="forecast-temp">
+                    <span class="temp-high">${Math.round(forecast.temp.max)}${this.unit === 'metric' ? '°C' : '°F'}</span>
+                    <span class="temp-separator">/</span>
+                    <span class="temp-low">${Math.round(forecast.temp.min)}${this.unit === 'metric' ? '°C' : '°F'}</span>
+                </div>
                 <div class="forecast-description">${weather.description}</div>
             `;
             this.forecastList.appendChild(forecastItem);

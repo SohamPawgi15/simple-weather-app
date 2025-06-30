@@ -269,6 +269,36 @@ body.dark-theme .weather-container {
     font-size: 1.2rem;
     font-weight: 600;
     color: #667eea;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+}
+
+.temp-high {
+    color: #ff6b6b;
+}
+
+.temp-separator {
+    color: #999;
+    font-weight: 400;
+}
+
+.temp-low {
+    color: #4ecdc4;
+}
+
+/* Dark theme temperature colors */
+body.dark-theme .temp-high {
+    color: #ff8a80;
+}
+
+body.dark-theme .temp-separator {
+    color: #aaa;
+}
+
+body.dark-theme .temp-low {
+    color: #80cbc4;
 }
 
 .forecast-description {
