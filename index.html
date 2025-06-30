@@ -17,6 +17,8 @@
     
     <!-- Apple Touch Icons -->
     <link rel="apple-touch-icon" href="https://openweathermap.org/img/wn/01d@2x.png">
+    <!-- Favicon for browser tab -->
+    <link rel="icon" type="image/png" href="https://openweathermap.org/img/wn/01d@2x.png">
     
     <!-- Main stylesheet for the app -->
     <link rel="stylesheet" href="styles.css">
@@ -29,7 +31,9 @@
     <div class="container">
         <!-- App header with title and controls -->
         <header class="header">
-            <h1><i class="fas fa-cloud-sun"></i> Weather App</h1>
+            <a href="./" style="text-decoration: none; color: inherit; display: flex; align-items: center; gap: 10px;">
+                <h1><i class="fas fa-cloud-sun"></i> Weather App</h1>
+            </a>
             <div class="controls">
                 <!-- Use my location button -->
                 <button id="locationBtn" class="btn btn-secondary" title="Use my location">

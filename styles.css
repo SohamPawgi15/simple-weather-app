@@ -732,4 +732,16 @@ body.dark-theme .stat-value {
     .weather-stats {
         padding: 20px;
     }
+}
+
+.header a {
+    text-decoration: none;
+    color: inherit;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+.header a:hover, .header a:active, .header a:focus {
+    text-decoration: none;
+    color: inherit;
 } 
