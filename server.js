@@ -19,7 +19,7 @@ const BASE_URL = 'https://api.openweathermap.org';
 app.get('/api/geocode/:city', async (req, res) => {
     try {
         const { city } = req.params;
-        const url = `${BASE_URL}/geo/1.0/direct?q=${encodeURIComponent(city)}&limit=1&appid=${API_KEY}`;
+        const url = `${BASE_URL}/geo/1.0/direct?q=${encodeURIComponent(city)}&limit=7&appid=${API_KEY}`;
         
         const response = await fetch(url);
         const data = await response.json();
