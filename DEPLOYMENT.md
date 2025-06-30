@@ -107,4 +107,12 @@ const response = await fetch(`/api/weather/${city}`);
 
 - **Netlify Support**: [docs.netlify.com](https://docs.netlify.com)
 - **Vercel Support**: [vercel.com/docs](https://vercel.com/docs)
-- **OpenWeather API**: [openweathermap.org/api](https://openweathermap.org/api) 
+- **OpenWeather API**: [openweathermap.org/api](https://openweathermap.org/api)
+
+## PWA & GitHub Pages
+
+If you want your PWA to work when hosted on GitHub Pages, set:
+- "start_url": "/your-repo-name/" in manifest.json
+- Use local icons (icon-192.png, icon-512.png) and reference them in manifest and index.html
+- Update your service worker to cache and serve files from the subdirectory
+- Uninstall the old PWA from your device before reinstalling after changes 

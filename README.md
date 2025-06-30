@@ -107,6 +107,15 @@ If you have ideas, spot a bug, or want to add a feature, feel free to fork this 
 
 MIT. Use it, remix it, share it—just don't sell it as your own.
 
+## PWA & GitHub Pages Subdirectory
+
+If you use GitHub Pages, your app is served from a subdirectory (e.g., /simple-weather-app/). Make sure:
+- Your manifest.json uses "start_url": "/simple-weather-app/"
+- All icon paths are local and referenced as "icon-192.png", "icon-512.png"
+- Your service worker caches and serves files from the subdirectory
+- You reference icons in index.html as <link rel="icon" href="icon-192.png">, etc.
+- Uninstall the old PWA and clear browser data before reinstalling after changes
+
 ---
 
 Thanks for checking out my project! If you use it or build on it, let me know—I'd love to see what you make.

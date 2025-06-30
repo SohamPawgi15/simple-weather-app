@@ -1,11 +1,13 @@
 // Service Worker for Weather App
 const CACHE_NAME = 'weather-app-v1';
 const urlsToCache = [
-    '/',
-    '/index.html',
-    '/styles.css',
-    '/script.js',
-    '/config.js',
+    '/simple-weather-app/',
+    '/simple-weather-app/index.html',
+    '/simple-weather-app/styles.css',
+    '/simple-weather-app/script.js',
+    '/simple-weather-app/config.js',
+    '/simple-weather-app/icon-192.png',
+    '/simple-weather-app/icon-512.png',
     'https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap',
     'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css'
 ];
@@ -32,7 +34,7 @@ self.addEventListener('fetch', (event) => {
             .catch(() => {
                 // If both cache and network fail, show offline page
                 if (event.request.destination === 'document') {
-                    return caches.match('/index.html');
+                    return caches.match('/simple-weather-app/index.html');
                 }
             })
     );
