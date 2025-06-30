@@ -17,6 +17,7 @@ class WeatherApp {
         this.initializeElements();
         this.bindEvents();
         this.updateHistoryDisplay();
+        this.setupPWAInstall();
     }
 
     // Grab all the DOM elements we'll need
@@ -61,6 +62,15 @@ class WeatherApp {
         this.loadingContainer = document.getElementById('loadingContainer');
         this.historyContainer = document.getElementById('historyContainer');
         this.searchHistoryEl = document.getElementById('searchHistory');
+
+        // Weather statistics elements
+        this.weatherStats = document.getElementById('weatherStats');
+        this.sunrise = document.getElementById('sunrise');
+        this.sunset = document.getElementById('sunset');
+        this.tempHigh = document.getElementById('tempHigh');
+        this.tempLow = document.getElementById('tempLow');
+        this.uvIndex = document.getElementById('uvIndex');
+        this.pressure = document.getElementById('pressure');
     }
 
     // Set up all event listeners
@@ -154,7 +164,36 @@ class WeatherApp {
         this.weatherDescription.textContent = weather.description;
         this.weatherIcon.src = `https://openweathermap.org/img/wn/${weather.icon}@2x.png`;
         this.weatherIcon.alt = weather.description;
+        
+        // Apply weather-based theme
+        this.applyWeatherTheme(weather.main, weather.description);
+        
+        // Display weather statistics
+        this.displayWeatherStats(data);
+        
         this.showWeather();
+    }
+
+    // Apply weather-based theme colors
+    applyWeatherTheme(weatherMain, description) {
+        const body = document.body;
+        const container = document.querySelector('.container');
+        
+        // Remove existing weather themes
+        body.classList.remove('weather-sunny', 'weather-cloudy', 'weather-rainy', 'weather-snowy', 'weather-stormy');
+        
+        // Apply new theme based on weather
+        if (weatherMain === 'Clear' || description.includes('clear')) {
+            body.classList.add('weather-sunny');
+        } else if (weatherMain === 'Clouds' || description.includes('cloud')) {
+            body.classList.add('weather-cloudy');
+        } else if (weatherMain === 'Rain' || description.includes('rain') || description.includes('drizzle')) {
+            body.classList.add('weather-rainy');
+        } else if (weatherMain === 'Snow' || description.includes('snow')) {
+            body.classList.add('weather-snowy');
+        } else if (weatherMain === 'Thunderstorm' || description.includes('thunder')) {
+            body.classList.add('weather-stormy');
+        }
     }
 
     // Show 5-day forecast (skip today)
@@ -296,6 +335,16 @@ class WeatherApp {
     }
     showLoading() {
         this.loadingContainer.classList.remove('hidden');
+        // Add weather-themed loading message
+        const loadingText = this.loadingContainer.querySelector('p');
+        const messages = [
+            'Checking the skies...',
+            'Gathering weather data...',
+            'Looking up the forecast...',
+            'Getting the latest conditions...',
+            'Fetching weather info...'
+        ];
+        loadingText.textContent = messages[Math.floor(Math.random() * messages.length)];
     }
     hideLoading() {
         this.loadingContainer.classList.add('hidden');
@@ -372,11 +421,118 @@ class WeatherApp {
             this.themeIcon.classList.add('fa-sun');
         }
     }
+
+    // PWA Install Prompt
+    setupPWAInstall() {
+        let deferredPrompt;
+        
+        window.addEventListener('beforeinstallprompt', (e) => {
+            // Prevent Chrome 67 and earlier from automatically showing the prompt
+            e.preventDefault();
+            // Stash the event so it can be triggered later
+            deferredPrompt = e;
+            
+            // Show install prompt after a delay
+            setTimeout(() => {
+                this.showInstallPrompt();
+            }, 3000);
+        });
+    }
+
+    showInstallPrompt() {
+        // Check if user has already dismissed the prompt
+        if (localStorage.getItem('installPromptDismissed')) {
+            return;
+        }
+
+        const prompt = document.createElement('div');
+        prompt.className = 'install-prompt';
+        prompt.innerHTML = `
+            <div>
+                <strong>Install Weather App</strong>
+                <div style="font-size: 0.9rem; margin-top: 5px;">Get quick access to weather info</div>
+            </div>
+            <button onclick="window.weatherApp.installApp()">Install</button>
+            <button class="close-btn" onclick="window.weatherApp.dismissInstallPrompt()">×</button>
+        `;
+        
+        document.body.appendChild(prompt);
+        
+        // Auto-hide after 10 seconds
+        setTimeout(() => {
+            if (prompt.parentNode) {
+                prompt.remove();
+            }
+        }, 10000);
+    }
+
+    async installApp() {
+        if (window.deferredPrompt) {
+            window.deferredPrompt.prompt();
+            const { outcome } = await window.deferredPrompt.userChoice;
+            if (outcome === 'accepted') {
+                console.log('User accepted the install prompt');
+            }
+            window.deferredPrompt = null;
+        }
+        this.dismissInstallPrompt();
+    }
+
+    dismissInstallPrompt() {
+        const prompt = document.querySelector('.install-prompt');
+        if (prompt) {
+            prompt.remove();
+        }
+        localStorage.setItem('installPromptDismissed', 'true');
+    }
+
+    // Display weather statistics
+    displayWeatherStats(data) {
+        // Sunrise and sunset
+        const sunriseTime = new Date(data.current.sunrise * 1000);
+        const sunsetTime = new Date(data.current.sunset * 1000);
+        this.sunrise.textContent = sunriseTime.toLocaleTimeString('en-US', { 
+            hour: '2-digit', 
+            minute: '2-digit',
+            hour12: true 
+        });
+        this.sunset.textContent = sunsetTime.toLocaleTimeString('en-US', { 
+            hour: '2-digit', 
+            minute: '2-digit',
+            hour12: true 
+        });
+
+        // High and low temperatures (from today's forecast)
+        if (data.daily && data.daily[0]) {
+            this.tempHigh.textContent = `${Math.round(data.daily[0].temp.max)}${this.unit === 'metric' ? '°C' : '°F'}`;
+            this.tempLow.textContent = `${Math.round(data.daily[0].temp.min)}${this.unit === 'metric' ? '°C' : '°F'}`;
+        }
+
+        // UV Index
+        this.uvIndex.textContent = data.current.uvi ? data.current.uvi.toFixed(1) : '--';
+
+        // Pressure
+        this.pressure.textContent = data.current.pressure ? `${data.current.pressure} hPa` : '--';
+
+        // Show the stats section
+        this.weatherStats.classList.remove('hidden');
+    }
 }
 
 // Start the app when the DOM is ready
 // (I like to keep this at the bottom for clarity)
 document.addEventListener('DOMContentLoaded', () => {
+    // Register service worker for offline support
+    if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('/sw.js')
+            .then((registration) => {
+                console.log('Service Worker registered with scope:', registration.scope);
+            })
+            .catch((error) => {
+                console.log('Service Worker registration failed:', error);
+            });
+    }
+    
     const weatherApp = new WeatherApp();
     window.weatherApp = weatherApp; // For debugging in console
 }); 

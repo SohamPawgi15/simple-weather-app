@@ -1,5 +1,4 @@
 # Configuration files with API keys
-config.js
 config.local.js
 config.production.js
 

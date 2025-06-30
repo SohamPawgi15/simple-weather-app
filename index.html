@@ -4,6 +4,20 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Simple Weather App</title>
+    
+    <!-- PWA Meta Tags -->
+    <meta name="theme-color" content="#667eea">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="Weather App">
+    <meta name="description" content="A beautiful weather app with real-time data, forecasts, and air quality information">
+    
+    <!-- PWA Manifest -->
+    <link rel="manifest" href="manifest.json">
+    
+    <!-- Apple Touch Icons -->
+    <link rel="apple-touch-icon" href="https://openweathermap.org/img/wn/01d@2x.png">
+    
     <!-- Main stylesheet for the app -->
     <link rel="stylesheet" href="styles.css">
     <!-- Google Fonts for a clean, modern look -->
@@ -84,6 +98,55 @@
                             <div class="detail-item">
                                 <i class="fas fa-eye"></i>
                                 <span>Visibility: <span id="visibility">--</span> km</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Weather Statistics Section -->
+                <div id="weatherStats" class="weather-stats hidden">
+                    <h3>Today's Stats</h3>
+                    <div class="stats-grid">
+                        <div class="stat-item">
+                            <i class="fas fa-sun"></i>
+                            <div class="stat-content">
+                                <span class="stat-label">Sunrise</span>
+                                <span id="sunrise" class="stat-value">--</span>
+                            </div>
+                        </div>
+                        <div class="stat-item">
+                            <i class="fas fa-moon"></i>
+                            <div class="stat-content">
+                                <span class="stat-label">Sunset</span>
+                                <span id="sunset" class="stat-value">--</span>
+                            </div>
+                        </div>
+                        <div class="stat-item">
+                            <i class="fas fa-thermometer-empty"></i>
+                            <div class="stat-content">
+                                <span class="stat-label">High</span>
+                                <span id="tempHigh" class="stat-value">--</span>
+                            </div>
+                        </div>
+                        <div class="stat-item">
+                            <i class="fas fa-thermometer-full"></i>
+                            <div class="stat-content">
+                                <span class="stat-label">Low</span>
+                                <span id="tempLow" class="stat-value">--</span>
+                            </div>
+                        </div>
+                        <div class="stat-item">
+                            <i class="fas fa-sun"></i>
+                            <div class="stat-content">
+                                <span class="stat-label">UV Index</span>
+                                <span id="uvIndex" class="stat-value">--</span>
+                            </div>
+                        </div>
+                        <div class="stat-item">
+                            <i class="fas fa-compress-arrows-alt"></i>
+                            <div class="stat-content">
+                                <span class="stat-label">Pressure</span>
+                                <span id="pressure" class="stat-value">--</span>
                             </div>
                         </div>
                     </div>
