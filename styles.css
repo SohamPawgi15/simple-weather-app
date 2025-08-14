@@ -98,13 +98,9 @@ body.dark-theme .btn-secondary {
 
 /* Search bar section */
 .search-section {
-    margin-bottom: 30px;
-}
-
-.search-section {
     position: relative;
     max-width: 500px;
-    margin: 0 auto;
+    margin: 0 auto 40px;
 }
 
 .search-container {
@@ -135,7 +131,7 @@ body.dark-theme .btn-secondary {
     background: var(--container-bg, rgba(255,255,255,0.95));
     border-radius: 20px;
     padding: 30px;
-    margin-bottom: 30px;
+    margin: 20px 0 30px;
     box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
     -webkit-backdrop-filter: blur(10px);
     backdrop-filter: blur(10px);
@@ -149,6 +145,7 @@ body.dark-theme .weather-container {
 .weather-header {
     text-align: center;
     margin-bottom: 30px;
+    padding-top: 10px;
 }
 
 .weather-header h2 {
