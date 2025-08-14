@@ -10,10 +10,11 @@ const config = {
     
     // Backend proxy URL - UPDATE THIS with your deployed backend URL
     // Examples:
+    // - Heroku: 'https://your-app-name.herokuapp.com'
     // - Railway: 'https://your-app-name.railway.app'
     // - Render: 'https://your-app-name.onrender.com'
     // - Local development: 'http://localhost:3000'
-    BACKEND_URL: 'https://simple-weather-app.up.railway.app',
+    BACKEND_URL: 'https://weather-app-soham-39e8fb18b835.herokuapp.com',
     
     // Default settings
     DEFAULT_UNIT: 'metric', // 'metric' for Celsius, 'imperial' for Fahrenheit
