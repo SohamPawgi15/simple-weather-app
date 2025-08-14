@@ -26,7 +26,9 @@ const BASE_URL = 'https://api.openweathermap.org';
 app.get('/api/geocode/:city', async (req, res) => {
     try {
         const { city } = req.params;
-        const url = `${BASE_URL}/geo/1.0/direct?q=${encodeURIComponent(city)}&limit=7&appid=${API_KEY}`;
+        
+        // First, try with a higher limit to get more results
+        const url = `${BASE_URL}/geo/1.0/direct?q=${encodeURIComponent(city)}&limit=15&appid=${API_KEY}`;
         
         const response = await fetch(url);
         const data = await response.json();
@@ -35,12 +37,76 @@ app.get('/api/geocode/:city', async (req, res) => {
             throw new Error('Failed to fetch coordinates');
         }
         
-        res.json(data);
+        // Sort results to prioritize major cities
+        const sortedData = data.sort((a, b) => {
+            // Prioritize cities with higher population (if available) or better name matches
+            const aScore = getCityScore(a, city);
+            const bScore = getCityScore(b, city);
+            return bScore - aScore;
+        });
+        
+        // Return top 7 results
+        res.json(sortedData.slice(0, 7));
     } catch (error) {
         console.error('Geocoding error:', error);
         res.status(500).json({ error: 'Failed to fetch coordinates' });
     }
 });
+
+// Helper function to score cities for better prioritization
+function getCityScore(city, searchTerm) {
+    let score = 0;
+    const searchLower = searchTerm.toLowerCase();
+    const cityName = city.name.toLowerCase();
+    const stateName = (city.state || '').toLowerCase();
+    const countryName = (city.country || '').toLowerCase();
+    
+    // Exact name match gets highest score
+    if (cityName === searchLower) {
+        score += 1000;
+    }
+    
+    // Starts with search term
+    if (cityName.startsWith(searchLower)) {
+        score += 500;
+    }
+    
+    // Contains search term
+    if (cityName.includes(searchLower)) {
+        score += 200;
+    }
+    
+    // Major cities (common names that should be prioritized)
+    const majorCities = [
+        'mumbai', 'delhi', 'bangalore', 'hyderabad', 'chennai', 'kolkata',
+        'new york', 'london', 'paris', 'tokyo', 'beijing', 'shanghai',
+        'moscow', 'berlin', 'madrid', 'rome', 'amsterdam', 'vienna',
+        'sydney', 'melbourne', 'toronto', 'vancouver', 'montreal',
+        'chicago', 'los angeles', 'san francisco', 'boston', 'washington'
+    ];
+    
+    if (majorCities.includes(cityName)) {
+        score += 300;
+    }
+    
+    // Capital cities get bonus
+    const capitalCities = [
+        'new delhi', 'london', 'paris', 'tokyo', 'beijing', 'moscow',
+        'berlin', 'madrid', 'rome', 'amsterdam', 'vienna', 'canberra',
+        'ottawa', 'washington', 'brasilia', 'buenos aires', 'mexico city'
+    ];
+    
+    if (capitalCities.includes(cityName)) {
+        score += 200;
+    }
+    
+    // Prefer cities with state/province info
+    if (city.state) {
+        score += 50;
+    }
+    
+    return score;
+}
 
 // Proxy endpoint for reverse geocoding
 app.get('/api/reverse-geocode', async (req, res) => {
