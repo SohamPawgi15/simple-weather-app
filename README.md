@@ -36,7 +36,12 @@ Hey there! This is a weather dashboard I built for fun and to learn more about w
 4. **Start the server:** `npm start`
 5. **Open** `http://localhost:3000` in your browser
 
-### Option 3: Other Hosting Platforms
+### Option 3: Heroku Deployment (Recommended for Full-Stack)
+1. **Follow the [Heroku Deployment Guide](HEROKU_DEPLOYMENT.md)**
+2. **Or use the automated script:** `./deploy-to-heroku.bat` (Windows) or `./deploy-to-heroku.sh` (Mac/Linux)
+3. **Your app will be live** at `https://your-app-name.herokuapp.com`
+
+### Option 4: Other Hosting Platforms
 - **Netlify/Vercel** with environment variables (see [DEPLOYMENT.md](DEPLOYMENT.md))
 - **Railway/Render** for full-stack deployment
 
@@ -90,14 +95,15 @@ Simple Weather App/
 
 ## Hosting Your App
 
-Want to share your app with friends? You can host it for free on:
+Want to share your app with friends? You can host it on:
+- **[Heroku](https://heroku.com/)** (full-stack deployment, $7/month) - **Recommended**
 - **[GitHub Pages](https://pages.github.com/)** + Railway/Render backend (current setup)
 - **[Netlify](https://www.netlify.com/)** (supports environment variables)
 - **[Vercel](https://vercel.com/)** (supports environment variables)
 - **[Railway](https://railway.app/)** (full-stack deployment)
 - **[Render](https://render.com/)** (full-stack deployment)
 
-See [DEPLOYMENT.md](DEPLOYMENT.md) and [GITHUB_PAGES_SETUP.md](GITHUB_PAGES_SETUP.md) for step-by-step instructions.
+See [HEROKU_DEPLOYMENT.md](HEROKU_DEPLOYMENT.md), [DEPLOYMENT.md](DEPLOYMENT.md) and [GITHUB_PAGES_SETUP.md](GITHUB_PAGES_SETUP.md) for step-by-step instructions.
 
 ## Contributing
 
