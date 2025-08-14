@@ -101,10 +101,14 @@ body.dark-theme .btn-secondary {
     margin-bottom: 30px;
 }
 
-.search-container {
-    display: flex;
+.search-section {
+    position: relative;
     max-width: 500px;
     margin: 0 auto;
+}
+
+.search-container {
+    display: flex;
     background: rgba(255, 255, 255, 0.95);
     border-radius: 12px;
     overflow: hidden;
@@ -791,6 +795,7 @@ body.dark-theme .stat-value {
     box-shadow: 0 8px 32px rgba(0,0,0,0.08);
     border-radius: 0 0 12px 12px;
     font-size: 1rem;
+    margin-top: 5px;
 }
 .city-suggestions:not(.hidden) {
     display: block;
